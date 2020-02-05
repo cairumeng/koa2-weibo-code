@@ -23,3 +23,60 @@ refactor your project:
    -> commit -m"fix:xxx"
    for writing a new document
    -> commit -m"doc:xxx"
+
+set your router:
+8. get router => test with postman or page
+=> get a page view
+router.get('/', async (ctx, next) => {
+  await ctx.render('index', {
+    title: 'Rumengbaobao'
+  })
+})
+=>get a json file
+router.get('/loadMore/:userName/:pageIndex', async(ctx,next)=>{
+  const {userName,pageIndex} = ctx.params
+  ctx.body= {
+    title: 'this is loadMore page',
+    userName,
+    pageIndex
+  }
+})
+
+9. post router => test with postman
+router.post('/login',async(ctx,next)=>{
+  const{userName, password} = ctx.request.body
+  ctx.body={
+    tag: "100",
+    userName,
+    password
+  }
+})
+
+
+use ejs with variable:
+10. variable
+ <h1><%= title %></h1>
+ <p><%= locals.msg %></p> =>if we're not sure of getting this variable from server, we could use "locals" to avoid problems
+
+ 11. condition if 
+ <% if (isMe) { %>
+      <a href="#">@ 提到我的(3)</a>
+    <% } else { %>
+      <button>关注</button>
+    <% } %>
+ * there is no = after %, because this is not output
+
+ 12. loop
+    <ul>
+        <% blogList.forEach(blog =>{%>
+        <li><%= blog.title %></li>
+        <% }) %>
+    </ul>
+
+ 13. widgets
+  <%- include('widgets/user_info',{
+      isMe
+    }) %> 
+ * - include('path', {variable}) 
+
+
