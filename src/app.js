@@ -17,7 +17,8 @@ onerror(app)
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))
-app.use(json())//是返回结果可以是对象来使用
+app.use(json())//以上两个针对post传上的数据变成json格式
+
 app.use(logger())//日志功能
 app.use(require('koa-static')(__dirname + '/public'))//静态化public文件
 
