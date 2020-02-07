@@ -7,11 +7,13 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 //引入路由
-const index = require('./routes/index')
-const users = require('./routes/users')
+const index = require('./routes/view/index')
+const users = require('./routes/api/users')
+const errors = require ('./routes/view/error')
 
 // error handler
-onerror(app)
+const onerrorConf ={ redirect:'/error'}
+onerror(app,onerrorConf)
 
 // middlewares
 app.use(bodyparser({
@@ -37,6 +39,7 @@ app.use(views(__dirname + '/views', {
 // routes 路由的注册
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(errors.routes(), errors.allowedMethods())// 404的路由一定要写到最后，否则会拦截其他路由
 
 // error-handling
 app.on('error', (err, ctx) => {
