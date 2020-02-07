@@ -13,7 +13,7 @@ router.get('/bar', async(ctx, next)=>{
 router.post('/login',async(ctx,next)=>{
   const{userName, password} = ctx.request.body
   ctx.body={
-    tag: "100",
+    tag: '100',
     userName,
     password
   }
