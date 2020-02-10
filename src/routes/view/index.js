@@ -1,7 +1,6 @@
 const router = require('koa-router')()
 
 router.get('/', async (ctx, next) => {
-  throw Error
   await ctx.render('index', {
     title: 'kao2',
     userName:'Rumengbaobao'
@@ -15,6 +14,13 @@ router.get('/json', async (ctx, next) => {
 })
 
 router.get('/profile/:userName',async(ctx,next)=>{
+  const session = ctx.session
+  if (session.viewNum == null){
+    session.viewNum = 0
+  }else{
+    session.viewNum ++
+  }
+ 
   const {userName} = ctx.params
   await ctx.render('index', {
     title:'欢迎学习koa2！',
@@ -25,7 +31,8 @@ router.get('/profile/:userName',async(ctx,next)=>{
       {id:2, title:'bbb'},
       {id:3, title:'ccc'},
       {id:4, title:'ddd'},
-    ]
+    ],
+    viewNum:session.viewNum
   })
 })
 

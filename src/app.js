@@ -7,7 +7,10 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const koaJwt = require('koa-jwt')
+const session = require ('koa-generic-session')
+const redisStore = require ('koa-redis')
 const { SECRET } = require('./conf/app')
+const {REDIS_CONF} = require ('../src/conf/db')
 
 //引入路由
 const index = require('./routes/view/index')
@@ -20,14 +23,14 @@ const onerrorConf = { redirect: '/error' }
 onerror(app, onerrorConf)
 
 // middlewares
-app.use(koaJwt({
-  secret: SECRET
-}).unless({
-  path: [
-    /^\/public/,
-    /^\/auth/
-  ]
-}))
+// app.use(koaJwt({
+//   secret: SECRET
+// }).unless({
+//   path: [
+//     /^\/public/,
+//     /^\/auth/
+//   ]
+// }))
 
 app.use(bodyparser({
   enableTypes: ['json', 'form', 'text']
@@ -48,6 +51,23 @@ app.use(views(__dirname + '/views', {
 //   const ms = new Date() - start
 //   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 // }) 与上面logger重复，是上面封装logger一个展示 
+
+
+// session 的配置
+app.keys= ['jkahfU03%hfjsh']
+app.use(session({
+  key:'weibo.sid', //cookie名字 默认是 'koa.sid'
+  prefix:'weibo:sess:',// redis key的前缀 默认是 'koa:sess:'
+  cookie:{
+    path: '/',
+    httpOnly: true, //指cookie 名字只能在服务端修改，避免客户端恶意篡改
+    maxAge : 24 * 60 * 60 *1000 //ms 保存时间为一天
+  },
+  // ttl:24 * 60 * 60 *1000,  redis过期时间默认
+  store:redisStore({
+    all: `${REDIS_CONF.host}:${REDIS_CONF.port}`
+  })
+}))
 
 // routes 路由的注册
 app.use(index.routes(), index.allowedMethods())
