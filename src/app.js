@@ -6,18 +6,31 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const koaJwt = require('koa-jwt')
+const { SECRET } = require('./conf/app')
+
 //引入路由
 const index = require('./routes/view/index')
 const users = require('./routes/api/users')
-const errors = require ('./routes/view/error')
+const errors = require('./routes/view/error')
+const auth = require('./routes/api/auth')
 
 // error handler
-const onerrorConf ={ redirect:'/error'}
-onerror(app,onerrorConf)
+const onerrorConf = { redirect: '/error' }
+onerror(app, onerrorConf)
 
 // middlewares
+app.use(koaJwt({
+  secret: SECRET
+}).unless({
+  path: [
+    /^\/public/,
+    /^\/auth/
+  ]
+}))
+
 app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
+  enableTypes: ['json', 'form', 'text']
 }))
 app.use(json())//以上两个针对post传上的数据变成json格式
 
@@ -39,6 +52,7 @@ app.use(views(__dirname + '/views', {
 // routes 路由的注册
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(auth.routes(), errors.allowedMethods())
 app.use(errors.routes(), errors.allowedMethods())// 404的路由一定要写到最后，否则会拦截其他路由
 
 // error-handling

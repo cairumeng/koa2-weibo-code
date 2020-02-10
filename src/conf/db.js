@@ -16,7 +16,7 @@ let MYSQL_CONF = {
   user: 'root',
   password: 'root',
   port: '3306',
-  database: 'koa2_weibo_code'
+  database: 'kao2_weibo_code'
 }
 
 module.exports = {
