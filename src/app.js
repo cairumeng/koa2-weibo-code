@@ -6,17 +6,16 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-const koaJwt = require('koa-jwt')
 const session = require ('koa-generic-session')
 const redisStore = require ('koa-redis')
-const { SECRET } = require('./conf/app')
 const {REDIS_CONF} = require ('../src/conf/db')
 
 //引入路由
 const index = require('./routes/view/index')
-const users = require('./routes/api/users')
-const errors = require('./routes/view/error')
-const auth = require('./routes/api/auth')
+const users = require('./routes/api/user')
+const userViewRouter = require ('./routes/view/user')
+const userAPIRouter = require ('./routes/api/user')
+const errorViewRouter = require('./routes/view/error')
 
 // error handler
 const onerrorConf = { redirect: '/error' }
@@ -69,11 +68,13 @@ app.use(session({
   })
 }))
 
-// routes 路由的注册
+// routes 路由的注册  
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
-app.use(auth.routes(), errors.allowedMethods())
-app.use(errors.routes(), errors.allowedMethods())// 404的路由一定要写到最后，否则会拦截其他路由
+app.use(userViewRouter.routes(),userViewRouter.allowedMethods() )
+app.use (userAPIRouter.routes(), userAPIRouter.allowedMethods())
+
+app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods())// 404的路由一定要写到最后，否则会拦截其他路由
 
 // error-handling
 app.on('error', (err, ctx) => {
