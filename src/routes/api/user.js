@@ -1,5 +1,5 @@
 /**
- * @description user API路由
+ * @description user API路由 : routes里只要写输入什么，输出什么，函数具体内容在controller里写
  * @author rumengbaobao
  */
 const router = require('koa-router')()
@@ -9,8 +9,13 @@ router.prefix('/api/user')
 
 // 注册路由
 router.post('/register', async (ctx, next) => {
-  const { userName, password } = ctx.request.body
-  // ctx.body = await register(userName, password)
+  const { userName, password, gender } = ctx.request.body
+  // 调用controller，返回
+  ctx.body = await register({
+    userName,
+    password,
+    gender
+  })
 })
 
 //用户是否存在
