@@ -9,8 +9,9 @@ const {
   registerUserNameNotExistInfo,
   registerUserNameExistInfo,
   resgisterFailInfo
-
 } = require('../model/ErroInfo')
+const doCrypto = require('../utils/cryp')
+
 
 const isExist = async (userName) => {
   const userInfo = await getUserInfo(userName)
@@ -29,22 +30,22 @@ const isExist = async (userName) => {
  * @param {string} password
  * @param {number} gender
  */
-const register = async({userName,password,gender}) =>{
+const register = async ({ userName, password, gender }) => {
   const userInfo = await getUserInfo(userName)
-  if(userInfo){
+  if (userInfo) {
     //用户已存在
     return ErrorModel(registerUserNameExistInfo)
   }
   //注册service
-  try{
+  try {
     await CreateUser({
       userName,
-      password,
+      password: doCrypto(password),
       gender
     })
     return new SuccessModel()
-        
-  }catch(ex){
+
+  } catch (ex) {
     console.error(ex.message, ex.stack)
     return new ErrorModel(resgisterFailInfo)
   }

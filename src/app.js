@@ -9,6 +9,7 @@ const logger = require('koa-logger')
 const session = require ('koa-generic-session')
 const redisStore = require ('koa-redis')
 const {REDIS_CONF} = require ('../src/conf/db')
+const {SESSION_SECRET_KEY} = require ('../src/conf/secretKeys')
 
 //引入路由
 const index = require('./routes/view/index')
@@ -53,7 +54,7 @@ app.use(views(__dirname + '/views', {
 
 
 // session 的配置
-app.keys= ['jkahfU03%hfjsh']
+app.keys= [SESSION_SECRET_KEY]
 app.use(session({
   key:'weibo.sid', //cookie名字 默认是 'koa.sid'
   prefix:'weibo:sess:',// redis key的前缀 默认是 'koa:sess:'

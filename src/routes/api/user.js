@@ -3,7 +3,7 @@
  * @author rumengbaobao
  */
 const router = require('koa-router')()
-const { isExist, /* register */ } = require('../../controller/user')
+const { isExist,  register  } = require('../../controller/user')
 
 router.prefix('/api/user')
 
