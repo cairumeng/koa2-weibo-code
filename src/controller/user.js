@@ -8,7 +8,8 @@ const { SuccessModel, ErrorModel } = require('../model/ResModel')
 const {
   registerUserNameNotExistInfo,
   registerUserNameExistInfo,
-  resgisterFailInfo
+  resgisterFailInfo,
+  loginFailInfo
 } = require('../model/ErroInfo')
 const doCrypto = require('../utils/cryp')
 
@@ -46,12 +47,30 @@ const register = async ({ userName, password, gender }) => {
     return new SuccessModel()
 
   } catch (ex) {
-    console.error(ex.message, ex.stack)
     return new ErrorModel(resgisterFailInfo)
   }
-
 }
+
+/**
+ * 
+ * @param {object} ctx 
+ * @param {string} userName 
+ * @param {string} password 
+ */
+const login = async (ctx, userName, password) => {
+  const userInfo = await getUserInfo(userName, doCrypto(password))
+
+  if (!userInfo) {
+    //登录失败
+    return new ErrorModel(loginFailInfo)
+  }
+  //登录成功
+  ctx.session.userInfo = userInfo
+  return new SuccessModel(userInfo)
+}
+
 module.exports = {
   isExist,
-  register
+  register,
+  login
 }
