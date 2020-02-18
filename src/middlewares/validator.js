@@ -4,7 +4,7 @@
  */
 
 const {ErrorModel} = require ('../model/ResModel')
-const {jsonSchemaFileInfo} = require ('../model/ErroInfo')
+const {jsonSchemaFileInfo} = require ('../model/ErrorInfo')
 
 const genValidator =(validateFn)=>{
   return async(ctx,next)=>{

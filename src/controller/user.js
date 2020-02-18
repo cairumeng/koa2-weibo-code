@@ -10,7 +10,7 @@ const {
   registerUserNameExistInfo,
   resgisterFailInfo,
   loginFailInfo
-} = require('../model/ErroInfo')
+} = require('../model/ErrorInfo')
 const doCrypto = require('../utils/cryp')
 
 
@@ -66,7 +66,7 @@ const login = async (ctx, userName, password) => {
   }
   //登录成功
   ctx.session.userInfo = userInfo
-  return new SuccessModel(userInfo)
+  return new SuccessModel()
 }
 
 module.exports = {

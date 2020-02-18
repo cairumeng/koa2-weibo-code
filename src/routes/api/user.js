@@ -20,17 +20,19 @@ router.post('/register', genValidator(userValidate), async (ctx, next) => {
     gender
   }) 
 })
-//登录
-router.post('/login', async (ctx, nex) => {
-  const { userName, password } = ctx.request.body
-  //controller
-  ctx.body = await login(ctx, userName, password)
-})
+
 
 //用户是否存在
 router.post('/isExist', async (ctx, next) => {
   const { userName } = ctx.request.body
   ctx.body = await isExist(userName)
+})
+
+//登录
+router.post('/login', async (ctx, nex) => {
+  const { userName, password } = ctx.request.body
+  //controller
+  ctx.body = await login(ctx, userName, password)
 })
 
 module.exports = router
