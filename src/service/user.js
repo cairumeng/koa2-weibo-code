@@ -42,7 +42,7 @@ const getUserInfo = async (userName, password) => {
  * @param{string} nickName
  */
 
-const CreateUser = async ({ userName, password, gender = 3, nickName }) => {
+const createUser = async ({ userName, password, gender = 3, nickName }) => {
   const result = await User.create({
     userName,
     password,
@@ -52,7 +52,22 @@ const CreateUser = async ({ userName, password, gender = 3, nickName }) => {
   return result
 }
 
+/**
+ * 删除用户
+ * @param {string} userName
+ * 
+ */
+const deleteUser = async (userName) => {
+  const result = await User.destroy({
+    where: {
+      userName
+    }
+  })
+  return result > 0
+}
+
 module.exports = {
   getUserInfo,
-  CreateUser
+  createUser,
+  deleteUser
 }

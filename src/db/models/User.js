@@ -19,7 +19,7 @@ const User = seq.define('user', {
   gender: {
     type: DECIMAL,
     allowNull: false,
-    default: 3,
+    defaultValue: 3,
     comment: '性别（1男性，2女性，3保密）'
   },
   picture: {

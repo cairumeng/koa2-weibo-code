@@ -1,6 +1,6 @@
 /**
  * @description 登录验证的中间件
- * @ author rumengbaobao
+ * @author rumengbaobao
  */
 
 /**
@@ -9,16 +9,15 @@
  * @param {function} next 
  */
 
-const {ErrorModel} = require('../model/ResModel')
-const {loginCheckFailInfo} =  require ('../model/ErrorInfo')
+const { ErrorModel } = require('../model/ResModel')
+const { loginCheckFailInfo } = require('../model/ErrorInfo')
 const loginCheck = async (ctx, next) => {
-  if (ctx.seesion && ctx.seesion.userInfo) {
+  if (ctx.session && ctx.session.userInfo) {
     //已登录
     await next()
     return
   }
   ctx.body = new ErrorModel(loginCheckFailInfo)
-
 }
 
 /**
