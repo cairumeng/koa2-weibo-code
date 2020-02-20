@@ -1,3 +1,4 @@
+const path = require('path')
 const Koa = require('koa')
 //app 是koa的一个实例
 const app = new Koa()
@@ -8,12 +9,16 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const session = require('koa-generic-session')
 const redisStore = require('koa-redis')
+const koaStatic = require('koa-static')
+
+
 const { REDIS_CONF } = require('../src/conf/db')
 const { SESSION_SECRET_KEY } = require('../src/conf/secretKeys')
 
 //引入路由
 const index = require('./routes/view/index')
 const users = require('./routes/api/user')
+const utilsAPIRouter = require ('./routes/api/utils')
 const userViewRouter = require('./routes/view/user')
 const userAPIRouter = require('./routes/api/user')
 const errorViewRouter = require('./routes/view/error')
@@ -22,27 +27,19 @@ const errorViewRouter = require('./routes/view/error')
 const onerrorConf = { redirect: '/error' }
 onerror(app, onerrorConf)
 
-// middlewares
-// app.use(koaJwt({
-//   secret: SECRET
-// }).unless({
-//   path: [
-//     /^\/public/,
-//     /^\/auth/
-//   ]
-// }))
-
+//middlewares
 app.use(bodyparser({
   enableTypes: ['json', 'form', 'text']
 }))
 app.use(json())//以上两个针对post传上的数据变成json格式
-
 app.use(logger())//日志功能
-app.use(require('koa-static')(__dirname + '/public'))//静态化public文件
+app.use(koaStatic(__dirname + '/public'))
+app.use(koaStatic(path.join(__dirname, '..', 'uploadFiles')))
 
 app.use(views(__dirname + '/views', {
   extension: 'ejs'
 }))//ejs注册 
+
 
 // // logger
 // app.use(async (ctx, next) => {
@@ -72,9 +69,9 @@ app.use(session({
 // routes 路由的注册  
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(utilsAPIRouter.routes(),userAPIRouter.allowedMethods())
 app.use(userViewRouter.routes(), userViewRouter.allowedMethods())
 app.use(userAPIRouter.routes(), userAPIRouter.allowedMethods())
-
 app.use(errorViewRouter.routes(), errorViewRouter.allowedMethods())// 404的路由一定要写到最后，否则会拦截其他路由
 
 // error-handling
