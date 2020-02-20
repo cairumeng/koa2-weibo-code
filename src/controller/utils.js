@@ -38,7 +38,7 @@ const saveFile = async ({ name, type, size, filePath }) => {
   const distFilePath = path.join(DIST_FOLDER_PATH, fileName) // 目的地
   await fse.move(filePath, distFilePath)
 
-  //返回信息
+  //返回信息 线上需要用同一文件服务来保证多线程文件同一
   return new SuccessModel({
     url: '/' + fileName
   })

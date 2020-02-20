@@ -3,15 +3,24 @@
  * @author rumengbaobao
  */
 
-const { getUserInfo, createUser, deleteUser } = require('../service/user')
-const { SuccessModel, ErrorModel } = require('../model/ResModel')
+const {
+  getUserInfo,
+  createUser,
+  deleteUser,
+  updateUser } = require('../service/user')
+const {
+  SuccessModel,
+  ErrorModel } = require('../model/ResModel')
+
 const {
   registerUserNameNotExistInfo,
   registerUserNameExistInfo,
   resgisterFailInfo,
   loginFailInfo,
-  deleteUserFailInfo
+  deleteUserFailInfo,
+  changeInfoFailInfo
 } = require('../model/ErrorInfo')
+
 const doCrypto = require('../utils/cryp')
 
 
@@ -43,7 +52,7 @@ const register = async ({ userName, password, gender }) => {
     await createUser({
       userName,
       password: doCrypto(password),
-      gender 
+      gender
     })
     return new SuccessModel()
 
@@ -79,10 +88,44 @@ const deleteCurUser = async (userName) => {
   return new ErrorModel(deleteUserFailInfo)
 
 }
+/**
+ * 
+ * @param {object} ctx 
+ * @param {string} nickName 
+ * @param {string} city
+ * @param {string} picture
+ * 
+ */
+const changeInfo = async (ctx, { nickName, city, picture }) => {
+  const { userName } = ctx.session.userInfo
+  if (!nickName) {
+    nickName = userName
+  }
+  //service
+  const result = await updateUser(
+    {
+      newNickName: nickName,
+      newCity: city,
+      newPicture: picture
+
+    }, { userName })
+
+  if (result) {
+    Object.assign(ctx.session.userInfo, {
+      nickName,
+      city,
+      picture
+    })
+    return new SuccessModel()
+  }
+  return new ErrorModel(changeInfoFailInfo)
+
+}
 
 module.exports = {
   isExist,
   register,
   login,
-  deleteCurUser
+  deleteCurUser,
+  changeInfo
 }

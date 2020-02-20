@@ -67,7 +67,7 @@ app.use(session({
 }))
 
 // routes 路由的注册  
-app.use(index.routes(), index.allowedMethods())
+app.use(index.routes(), index.allowedMethods()) 
 app.use(users.routes(), users.allowedMethods())
 app.use(utilsAPIRouter.routes(),userAPIRouter.allowedMethods())
 app.use(userViewRouter.routes(), userViewRouter.allowedMethods())
