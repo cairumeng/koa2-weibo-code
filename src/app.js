@@ -16,12 +16,14 @@ const { REDIS_CONF } = require('../src/conf/db')
 const { SESSION_SECRET_KEY } = require('../src/conf/secretKeys')
 
 //引入路由
-const index = require('./routes/view/index')
+
 const users = require('./routes/api/user')
+const blogViewRouter = require('./routes/view/blog')
 const utilsAPIRouter = require ('./routes/api/utils')
 const userViewRouter = require('./routes/view/user')
 const userAPIRouter = require('./routes/api/user')
 const errorViewRouter = require('./routes/view/error')
+
 
 // error handler
 const onerrorConf = { redirect: '/error' }
@@ -67,8 +69,8 @@ app.use(session({
 }))
 
 // routes 路由的注册  
-app.use(index.routes(), index.allowedMethods()) 
 app.use(users.routes(), users.allowedMethods())
+app.use(blogViewRouter.routes(),blogViewRouter.allowedMethods())
 app.use(utilsAPIRouter.routes(),userAPIRouter.allowedMethods())
 app.use(userViewRouter.routes(), userViewRouter.allowedMethods())
 app.use(userAPIRouter.routes(), userAPIRouter.allowedMethods())
