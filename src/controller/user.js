@@ -129,15 +129,15 @@ const changeInfo = async (ctx, { nickName, city, picture }) => {
  * @param {string} password 
  * @param {string} newPassword 
  */
-const changePassword= async(userName,password,newPassword)=>{
+const changePassword = async (userName, password, newPassword) => {
   const result = await updateUser(
-    {newPassword: doCrypto(newPassword)},
+    { newPassword: doCrypto(newPassword) },
     {
       userName,
-      password : doCrypto(password)
+      password: doCrypto(password)
     }
   )
-  if(result){
+  if (result) {
     return new SuccessModel()
   }
   return new ErrorModel(changePasswordFailInfo)
@@ -146,7 +146,8 @@ const changePassword= async(userName,password,newPassword)=>{
  * 
  * @param {object} ctx 
  */
-const logout = async(ctx)=>{
+
+const logout = async (ctx) => {
   delete ctx.session.userInfo
   return new SuccessModel()
 }
