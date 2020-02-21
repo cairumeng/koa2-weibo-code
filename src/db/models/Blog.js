@@ -1,29 +1,24 @@
+/**
+ * 
+ * @description 微博数据模型
+ * @author rumengbaobao
+ */
 
-const Sequelize = require('sequelize')
+const {INTEGER, STRING, TEXT} = require ('../types')
 const seq = require('../seq')
-const User = require('./User')
 
 const Blog = seq.define('blog', {
-  title: {
-    type: Sequelize.STRING,
-    allowNull: false
+  userId:{
+    type:INTEGER,
+    allowNull:false,
   },
   content: {
-    type: Sequelize.TEXT,
+    type: TEXT,
     allowNull: false
   },
-  userId: {
-    type: Sequelize.INTEGER,
-    allowNull: false
+  image: {
+    type:STRING,
   }
-})
-
-Blog.belongsTo(User, {
-  foreignKey: 'userId'
-})
-
-User.hasMany(Blog, {
-  foreignKey: 'userId'
 })
 
 module.exports = Blog
