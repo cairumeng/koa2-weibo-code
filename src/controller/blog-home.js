@@ -2,7 +2,7 @@
  * @description 首页controller
  * @author rumengbaobao
  */
-
+const xss = require ('xss')
 const { createBlog } = require('../service/blog')
 const { SuccessModel, ErrorModel } = require ('../model/ResModel')
 const {createBlogFailInfo} = require ('../model/ErrorInfo')
@@ -15,20 +15,20 @@ const {createBlogFailInfo} = require ('../model/ErrorInfo')
 const create = async ({ userId, content, image }) => {
   //service
 
-  try {
+  try { 
     const blog = await createBlog({
       userId,
-      content,
+      content:xss(content),
       image
     })
     return new SuccessModel(blog)
   } catch (ex) {
     console.error(ex.message, ex.stack)
     return new ErrorModel(createBlogFailInfo)
-  }
+  } 
 
 }
-
-module.exports = {
+ 
+module.exports = {  
   create
 }
