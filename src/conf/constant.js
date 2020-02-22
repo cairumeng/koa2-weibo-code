@@ -4,5 +4,6 @@
  */
 
 module.exports = {
-  DEFAULT_PICTURE: 'https:dwz.cn/rnTnftZs'
+  DEFAULT_PICTURE: 'https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/evo-cubist/Mona-Lisa-256x256.jpg',
+  PAGE_SIZE:5
 }
