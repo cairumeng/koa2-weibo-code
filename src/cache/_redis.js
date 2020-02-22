@@ -5,7 +5,7 @@
  */
 
 const redis = require('redis')
-const { REDIS_CONF } = Require('../conf/db')
+const { REDIS_CONF } = require('../conf/db')
 
 
 //创建客户端
@@ -25,7 +25,7 @@ const set = (key, val, timeout = 60 * 60) => {
     val = JSON.stringify(val)
   }
   redisClient.set(key, val)
-  redisClient.expire(timeout)
+  redisClient.expire(key, timeout)
 }
 
 /**
@@ -50,7 +50,7 @@ const get = (key) => {
   })
 }
 
-module.exports={
+module.exports = {
   get,
   set
 }

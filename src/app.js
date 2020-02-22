@@ -18,6 +18,7 @@ const { SESSION_SECRET_KEY } = require('../src/conf/secretKeys')
 //引入路由
 
 const users = require('./routes/api/user')
+const squareAPIRouter = require('./routes/api/blog-square')
 const profileAPIRouter = require ('./routes/api/blog-profile')
 const homeAPIRouter = require('./routes/api/blog-home')
 const blogViewRouter = require('./routes/view/blog')
@@ -72,6 +73,7 @@ app.use(session({
 
 // routes 路由的注册  
 app.use(users.routes(), users.allowedMethods())
+app.use(squareAPIRouter.routes(),users.allowedMethods())
 app.use(profileAPIRouter.routes(), profileAPIRouter.allowedMethods())
 app.use(homeAPIRouter.routes(), homeAPIRouter.allowedMethods())
 app.use(blogViewRouter.routes(),blogViewRouter.allowedMethods())
